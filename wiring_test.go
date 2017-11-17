@@ -17,6 +17,27 @@ func init() {
 	srv = httptest.NewServer(router)
 }
 
+func TestHashWiringStatusCodes(t *testing.T) {
+	for _, testcase := range []struct {
+		method string
+		url    string
+		body   string
+		want   int
+	}{
+		{method: "POST", url: srv.URL + "/hash", body: `{"s":"world"}`, want: 200},
+		{method: "POST", url: srv.URL + "/hash", body: `{"s":""}`, want: 200},
+		{method: "POST", url: srv.URL + "/hash", body: `{"sdfs":""}`, want: 200},
+		{method: "POST", url: srv.URL + "/hash", body: "invalid", want: 400},
+		{method: "POST", url: srv.URL + "/hashDoesNotExist", body: "invalid", want: 404},
+	} {
+		req, _ := http.NewRequest(testcase.method, testcase.url, strings.NewReader(testcase.body))
+		resp, _ := http.DefaultClient.Do(req)
+		if want, have := testcase.want, resp.StatusCode; want != have {
+			t.Errorf("%s %s %s: want %d, have %d", testcase.method, testcase.url, testcase.body, want, have)
+		}
+	}
+}
+
 func TestHashWiring(t *testing.T) {
 	for _, testcase := range []struct {
 		method, url, body, want string

@@ -53,5 +53,5 @@ script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push tchaudhry/hash-svc:master
+    docker_build_and_push.sh master
     fi

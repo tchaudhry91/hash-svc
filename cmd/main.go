@@ -19,7 +19,7 @@ func main() {
 	)
 	flag.Parse()
 
-	logger := kitlog.NewLogfmtLogger(os.Stderr)
+	logger := kitlog.NewJSONLogger(os.Stderr)
 
 	svc := hashservice.NewHashService()
 	svc = hashservice.NewLoggingMiddleware(logger, svc)

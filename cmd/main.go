@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
+	kitlog "github.com/go-kit/kit/log"
 	hashservice "github.com/tchaudhry91/hash-svc/pkg"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -17,7 +19,10 @@ func main() {
 	)
 	flag.Parse()
 
+	logger := kitlog.NewLogfmtLogger(os.Stderr)
+
 	svc := hashservice.NewHashService()
+	svc = hashservice.NewLoggingMiddleware(logger, svc)
 	endpoint := hashservice.MakeHashSHA256Endpoint(svc)
 	transportHandler := hashservice.MakeHashSHA256Handler(endpoint)
 

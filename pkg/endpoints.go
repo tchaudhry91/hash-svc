@@ -1,4 +1,4 @@
-package main
+package hasher
 
 import (
 	"context"
@@ -14,7 +14,7 @@ type hashSHA256Response struct {
 	Err string `json:"err,omitempty"`
 }
 
-func makeHashSHA256Endpoint(svc HashService) endpoint.Endpoint {
+func MakeHashSHA256Endpoint(svc HashService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(hashSHA256Request)
 		v, err := svc.HashSHA256(ctx, req.S)

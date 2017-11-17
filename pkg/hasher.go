@@ -1,4 +1,4 @@
-package main
+package hasher
 
 import (
 	"context"
@@ -28,3 +28,8 @@ func (hashService) HashSHA256(_ context.Context, input string) (string, error) {
 
 // ErrEmpty is returned when there is a blank input string to hash
 var ErrEmpty = errors.New("Empty input string")
+
+// NewHashService is a constructor to the hashService
+func NewHashService() HashService {
+	return hashService{}
+}

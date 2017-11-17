@@ -1,4 +1,4 @@
-package main
+package hasher
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 )
 
@@ -16,17 +15,7 @@ var (
 	ErrJSONUnMarshall = errors.New("failed to parse json")
 )
 
-func main() {
-	svc := hashService{}
-
-	hashEndpoint := makeHashSHA256Endpoint(svc)
-	muxRouter := makeHashSHA256Handler(hashEndpoint)
-
-	http.Handle("/", muxRouter)
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
-}
-
-func makeHashSHA256Handler(e endpoint.Endpoint) http.Handler {
+func MakeHashSHA256Handler(e endpoint.Endpoint) http.Handler {
 	r := mux.NewRouter()
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorEncoder(encodeError),

@@ -1,4 +1,4 @@
-package main
+package hasher
 
 import (
 	"io/ioutil"
@@ -11,9 +11,9 @@ import (
 var srv *httptest.Server
 
 func init() {
-	svc := hashService{}
-	hashEndpoint := makeHashSHA256Endpoint(svc)
-	router := makeHashSHA256Handler(hashEndpoint)
+	svc := NewHashService()
+	hashEndpoint := MakeHashSHA256Endpoint(svc)
+	router := MakeHashSHA256Handler(hashEndpoint)
 	srv = httptest.NewServer(router)
 }
 

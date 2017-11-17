@@ -15,6 +15,7 @@ var (
 	ErrJSONUnMarshall = errors.New("failed to parse json")
 )
 
+// MakeHashSHA256Handler returns an http.Handler populated with go-kit endpoint routes
 func MakeHashSHA256Handler(e endpoint.Endpoint) http.Handler {
 	r := mux.NewRouter()
 	options := []httptransport.ServerOption{

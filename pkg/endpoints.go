@@ -14,6 +14,7 @@ type hashSHA256Response struct {
 	Err string `json:"err,omitempty"`
 }
 
+// MakeHashSHA256Endpoint returns a go-kit endpoint for the hashService
 func MakeHashSHA256Endpoint(svc HashService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(hashSHA256Request)

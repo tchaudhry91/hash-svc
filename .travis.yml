@@ -1,4 +1,7 @@
 language: go
+sudo: required
+services:
+  - docker
 
 # Only the last two Go releases are supported by the Go team with security
 # updates. Any versions older than that should be considered deprecated.
@@ -24,7 +27,7 @@ matrix:
 
 # Don't email me the results of the test runs.
 notifications:
-  email: false
+  email: true 
 
 # Anything in before_script that returns a nonzero exit code will
 # flunk the build and immediately stop. It's sorta like having
@@ -34,13 +37,13 @@ before_script:
   - go get github.com/golang/lint/golint                        # Linter
   - go get honnef.co/go/tools/cmd/megacheck                     # Badass static analyzer/linter
   - go get github.com/fzipp/gocyclo
-  - go get -u
+  - go get -t github.com/tchaudhry91/hash-svc/pkg
 
 # script always run to completion (set +e). All of these code checks are must haves
 # in a modern Go project.
 script:
   - test -z $(gofmt -s -l $GO_FILES)         # Fail if a .go file hasn't been formatted with gofmt
-  - go test -v -race -cover ./...                   # Run all the tests with the race detector enabled
+  - go test -v -race -cover ./...            # Run all the tests with the race detector enabled
   - go vet ./...                             # go vet is the official Go static analyzer
   - megacheck ./...                          # "go vet on steroids" + linter
   - gocyclo -over 19 $GO_FILES               # forbid code with huge functions

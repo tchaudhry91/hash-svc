@@ -5,15 +5,6 @@ import (
 	"github.com/go-kit/kit/endpoint"
 )
 
-type hashSHA256Request struct {
-	S string `json:"s"`
-}
-
-type hashSHA256Response struct {
-	V   string `json:"v"`
-	Err string `json:"err,omitempty"`
-}
-
 // MakeHashSHA256Endpoint returns a go-kit endpoint for the hashService
 func MakeHashSHA256Endpoint(svc HashService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {

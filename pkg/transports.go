@@ -64,3 +64,12 @@ func codeFrom(err error) int {
 		return http.StatusInternalServerError
 	}
 }
+
+type hashSHA256Request struct {
+	S string `json:"s"`
+}
+
+type hashSHA256Response struct {
+	V   string `json:"v"`
+	Err string `json:"err,omitempty"`
+}

@@ -31,7 +31,7 @@ func main() {
 	},
 		fieldKeys,
 	)
-	requestLatency := kitprometheus.NewHistogramFrom(stdprometheus.HistogramOpts{
+	requestLatency := kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
 		Namespace: "microservices",
 		Subsystem: "hash_service",
 		Name:      "request_processing_latency",

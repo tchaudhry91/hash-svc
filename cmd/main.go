@@ -7,7 +7,6 @@ import (
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	hashservice "github.com/tchaudhry91/hash-svc/pkg"
-	"log"
 	"net/http"
 	"os"
 )
@@ -49,5 +48,6 @@ func main() {
 
 	http.Handle("/metrics", promhttp.Handler())
 	http.Handle("/", transportHandler)
-	log.Fatal(http.ListenAndServe(serverAddr, nil))
+	logger.Log("msg", "HTTP", "addr", serverAddr)
+	logger.Log("err", http.ListenAndServe(serverAddr, nil))
 }

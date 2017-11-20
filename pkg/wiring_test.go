@@ -1,9 +1,13 @@
 package hasher
 
 import (
+	kitlog "github.com/go-kit/kit/log"
+	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
+	stdprometheus "github.com/prometheus/client_golang/prometheus"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 )
@@ -11,7 +15,25 @@ import (
 var srv *httptest.Server
 
 func init() {
+	fieldKeys := []string{"method", "error"}
+	requestCount := kitprometheus.NewCounter(stdprometheus.NewCounterVec(
+		stdprometheus.CounterOpts{
+			Name: "api_request_total",
+			Help: "Total API requests, partitioned by method and error",
+		},
+		fieldKeys,
+	))
+	requestLatency := kitprometheus.NewHistogram(stdprometheus.NewHistogramVec(
+		stdprometheus.HistogramOpts{
+			Name: "request_processing_latency",
+			Help: "Time taken per request, partitioned by method and error",
+		},
+		fieldKeys,
+	))
+
 	svc := NewHashService()
+	svc = NewLoggingMiddleware(kitlog.NewJSONLogger(os.Stderr), svc)
+	svc = NewInstrumentingMiddleware(requestCount, requestLatency, svc)
 	hashEndpoint := MakeHashSHA256Endpoint(svc)
 	router := MakeHashSHA256Handler(hashEndpoint)
 	srv = httptest.NewServer(router)

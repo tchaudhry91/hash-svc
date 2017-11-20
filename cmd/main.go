@@ -5,6 +5,7 @@ import (
 	kitlog "github.com/go-kit/kit/log"
 	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	hashservice "github.com/tchaudhry91/hash-svc/pkg"
 	"log"
 	"net/http"
@@ -46,7 +47,7 @@ func main() {
 	endpoint := hashservice.MakeHashSHA256Endpoint(svc)
 	transportHandler := hashservice.MakeHashSHA256Handler(endpoint)
 
-	http.Handle("/metrics", stdprometheus.Handler())
+	http.Handle("/metrics", promhttp.Handler())
 	http.Handle("/", transportHandler)
 	log.Fatal(http.ListenAndServe(serverAddr, nil))
 }

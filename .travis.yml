@@ -1,4 +1,5 @@
 sudo: required
+language: bash
 
 services:
   - docker
@@ -6,5 +7,5 @@ services:
 script:
   - make docker
 
-on_success:
+after_success:
   - make docker-push

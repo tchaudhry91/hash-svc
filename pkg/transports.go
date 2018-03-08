@@ -29,7 +29,15 @@ func MakeHashSHA256Handler(e endpoint.Endpoint) http.Handler {
 		options...,
 	)
 
+	hashSHA256GetHandler := httptransport.NewServer(
+		e,
+		decodeHashSHA256RequestAlternate,
+		encodeHashSHA256Response,
+		options...,
+	)
+
 	r.Methods("POST").Path("/hash").Handler(hashSHA256Handler)
+	r.Methods("GET").Path("/hash").Handler(hashSHA256GetHandler)
 	return r
 }
 
@@ -39,6 +47,14 @@ func decodeHashSHA256Request(_ context.Context, r *http.Request) (interface{}, e
 		return nil, ErrJSONUnMarshall
 	}
 	return request, nil
+}
+
+func decodeHashSHA256RequestAlternate(_ context.Context, r *http.Request) (interface{}, error) {
+	s := r.FormValue("s")
+	req := hashSHA256Request{
+		S: s,
+	}
+	return req, nil
 }
 
 func encodeHashSHA256Response(_ context.Context, w http.ResponseWriter, resp interface{}) error {

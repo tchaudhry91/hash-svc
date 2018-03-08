@@ -1,5 +1,2 @@
 .git
-docker_build_and_push.sh
-Dockerfile
-Dockerfile-builder
 .travis.yml

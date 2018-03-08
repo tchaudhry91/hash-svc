@@ -1,8 +1,0 @@
-FROM golang:1
-
-WORKDIR /go/src/github.com/tchaudhry91/hash-svc
-COPY . . 
-WORKDIR /go/src/github.com/tchaudhry91/hash-svc/cmd
-RUN go get -t
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main main.go
-RUN cp main /main

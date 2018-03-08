@@ -48,6 +48,6 @@ func main() {
 
 	http.Handle("/metrics", promhttp.Handler())
 	http.Handle("/", transportHandler)
-	logger.Log("msg", "HTTP", "addr", serverAddr)
+	logger.Log("msg", "Started HTTP Server", "addr", serverAddr)
 	logger.Log("err", http.ListenAndServe(serverAddr, nil))
 }

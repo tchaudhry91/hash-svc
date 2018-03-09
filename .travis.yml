@@ -5,7 +5,10 @@ services:
   - docker
 
 script:
+  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   - make docker
+  - make docker-arm
 
 after_success:
   - make docker-push
+  - make docker-push-arm

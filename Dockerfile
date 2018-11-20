@@ -1,11 +1,9 @@
 # Builder 
 FROM     golang:latest as BUILDER
-RUN      mkdir -p /go/src/github.com/tchaudhry91/hash-svc
+COPY    . /go/src/github.com/tchaudhry91/hash-svc
 WORKDIR /go/src/github.com/tchaudhry91/hash-svc
-COPY    . .
-RUN     go get -d -v ./...
-RUN     go test -v ./...
-ENV     CGO_ENABLED=0
+RUN     go get -d -v ./... && \
+        go test -v ./...
 RUN     cd cmd && go build -o hash-svc
 
 
